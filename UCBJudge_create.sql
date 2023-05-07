@@ -1,5 +1,5 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2023-05-07 04:33:34.662
+-- Last modification date: 2023-05-07 18:19:35.209
 
 -- tables
 -- Table: admitted_language
@@ -7,7 +7,7 @@ CREATE TABLE admitted_language (
     admitted_langauge_id serial  NOT NULL,
     problem_id int  NOT NULL,
     language_id int  NOT NULL,
-    status smallint  NOT NULL,
+    status boolean  NOT NULL,
     CONSTRAINT admitted_language_pk PRIMARY KEY (admitted_langauge_id)
 );
 
@@ -15,7 +15,7 @@ CREATE TABLE admitted_language (
 CREATE TABLE campus (
     campus_id serial  NOT NULL,
     name varchar(30)  NOT NULL,
-    status smallint  NOT NULL,
+    status boolean  NOT NULL,
     CONSTRAINT campus_pk PRIMARY KEY (campus_id)
 );
 
@@ -24,7 +24,7 @@ CREATE TABLE campus_major (
     campus_major_id serial  NOT NULL,
     major_id int  NOT NULL,
     campus_id int  NOT NULL,
-    status smallint  NOT NULL,
+    status boolean  NOT NULL,
     CONSTRAINT campus_major_pk PRIMARY KEY (campus_major_id)
 );
 
@@ -33,7 +33,7 @@ CREATE TABLE catalog (
     catalog_id serial  NOT NULL,
     catalog_type_id int  NOT NULL,
     name varchar(60)  NOT NULL,
-    status smallint  NOT NULL,
+    status boolean  NOT NULL,
     CONSTRAINT FA_catalog_pk PRIMARY KEY (catalog_id)
 );
 
@@ -42,7 +42,7 @@ CREATE TABLE catalog_hierarchy (
     catalog_hierarchy_id serial  NOT NULL,
     parent_catalog_id int  NOT NULL,
     child_catalog_id int  NOT NULL,
-    status smallint  NOT NULL,
+    status boolean  NOT NULL,
     CONSTRAINT FA_CatalogHierarchy_pk PRIMARY KEY (catalog_hierarchy_id)
 );
 
@@ -50,7 +50,7 @@ CREATE TABLE catalog_hierarchy (
 CREATE TABLE catalog_type (
     catalog_type_id serial  NOT NULL,
     type varchar(60)  NOT NULL,
-    status smallint  NOT NULL,
+    status boolean  NOT NULL,
     CONSTRAINT FA_catalog_type_pk PRIMARY KEY (catalog_type_id)
 );
 
@@ -62,7 +62,7 @@ CREATE TABLE clarification (
     professor_id int  NOT NULL,
     response varchar(255)  NOT NULL,
     question varchar(255)  NOT NULL,
-    status smallint  NOT NULL,
+    status boolean  NOT NULL,
     CONSTRAINT clarification_pk PRIMARY KEY (clarification_id)
 );
 
@@ -72,7 +72,7 @@ CREATE TABLE comment (
     comment_id serial  NOT NULL,
     submission_id int  NOT NULL,
     comment varchar(255)  NOT NULL,
-    status smallint  NOT NULL,
+    status boolean  NOT NULL,
     CONSTRAINT comment_pk PRIMARY KEY (comment_id)
 );
 
@@ -82,7 +82,7 @@ CREATE TABLE contest (
     professor_id int  NOT NULL,
     starting_date timestamp  NOT NULL,
     ending_date timestamp  NOT NULL,
-    status smallint  NOT NULL,
+    status boolean  NOT NULL,
     CONSTRAINT contest_pk PRIMARY KEY (contest_id)
 );
 
@@ -91,7 +91,7 @@ CREATE TABLE contest_problem (
     contest_problem_id serial  NOT NULL,
     problem_id int  NOT NULL,
     contest_id int  NOT NULL,
-    status smallint  NOT NULL,
+    status boolean  NOT NULL,
     CONSTRAINT contest_problem_pk PRIMARY KEY (contest_problem_id)
 );
 
@@ -102,7 +102,7 @@ CREATE TABLE contest_scoreboard (
     contest_contest_id int  NOT NULL,
     rank int  NOT NULL,
     problems_solved int  NOT NULL,
-    status smallint  NOT NULL,
+    status boolean  NOT NULL,
     CONSTRAINT contest_scoreboard_pk PRIMARY KEY (contest_scoreboard_id)
 );
 
@@ -111,7 +111,7 @@ CREATE TABLE languages (
     language_id int  NOT NULL,
     name varchar(30)  NOT NULL,
     extension varchar(5)  NOT NULL,
-    status smallint  NOT NULL,
+    status boolean  NOT NULL,
     CONSTRAINT languages_pk PRIMARY KEY (language_id)
 );
 
@@ -119,7 +119,7 @@ CREATE TABLE languages (
 CREATE TABLE major (
     major_id int  NOT NULL,
     name varchar(30)  NOT NULL,
-    status smallint  NOT NULL,
+    status boolean  NOT NULL,
     CONSTRAINT major_pk PRIMARY KEY (major_id)
 );
 
@@ -127,11 +127,12 @@ CREATE TABLE major (
 CREATE TABLE problem (
     problem_id serial  NOT NULL,
     professor_id int  NOT NULL,
-    is_public smallint  NOT NULL,
+    title varchar(60)  NOT NULL,
+    is_public boolean  NOT NULL,
     s3_description int  NOT NULL,
     max_time decimal(5,3)  NOT NULL,
     max_memory int  NOT NULL,
-    status smallint  NOT NULL,
+    status boolean  NOT NULL,
     CONSTRAINT problem_pk PRIMARY KEY (problem_id)
 );
 
@@ -140,7 +141,7 @@ CREATE TABLE problem_tag (
     problem_tag_id serial  NOT NULL,
     problem_id int  NOT NULL,
     tag_id int  NOT NULL,
-    status smallint  NOT NULL,
+    status boolean  NOT NULL,
     CONSTRAINT problem_tag_pk PRIMARY KEY (problem_tag_id)
 );
 
@@ -148,15 +149,17 @@ CREATE TABLE problem_tag (
 CREATE TABLE professor (
     kc_uuid varchar(30)  NOT NULL,
     professor_id int  NOT NULL,
-    status smallint  NOT NULL,
+    status boolean  NOT NULL,
     CONSTRAINT professor_pk PRIMARY KEY (professor_id)
 );
 
 -- Table: s3_object
 CREATE TABLE s3_object (
     s3_object_id serial  NOT NULL,
-    url varchar(100)  NOT NULL,
-    status smallint  NOT NULL,
+    content_type varchar(50)  NOT NULL,
+    bucket varchar(50)  NOT NULL,
+    filename varchar(100)  NOT NULL,
+    status boolean  NOT NULL,
     CONSTRAINT s3_object_pk PRIMARY KEY (s3_object_id)
 );
 
@@ -165,7 +168,7 @@ CREATE TABLE student (
     kc_uuid varchar(30)  NOT NULL,
     student_id int  NOT NULL,
     campus_major_id int  NOT NULL,
-    status smallint  NOT NULL,
+    status boolean  NOT NULL,
     CONSTRAINT student_pk PRIMARY KEY (student_id)
 );
 
@@ -175,7 +178,7 @@ CREATE TABLE student_contest (
     contest_id int  NOT NULL,
     student_id int  NOT NULL,
     registered_on date  NOT NULL,
-    status smallint  NOT NULL,
+    status boolean  NOT NULL,
     CONSTRAINT student_contest_pk PRIMARY KEY (student_contest_id)
 );
 
@@ -184,7 +187,7 @@ CREATE TABLE student_subject (
     student_subject_id serial  NOT NULL,
     subject_id int  NOT NULL,
     student_id int  NOT NULL,
-    status smallint  NOT NULL,
+    status boolean  NOT NULL,
     CONSTRAINT student_subject_pk PRIMARY KEY (student_subject_id)
 );
 
@@ -197,7 +200,7 @@ CREATE TABLE subject (
     campus_major_id int  NOT NULL,
     date_from date  NOT NULL,
     date_to date  NOT NULL,
-    status smallint  NOT NULL,
+    status boolean  NOT NULL,
     CONSTRAINT subject_pk PRIMARY KEY (subject_id)
 );
 
@@ -210,7 +213,7 @@ CREATE TABLE submission (
     contest_problem_id int  NOT NULL,
     verdict_type_id int  NOT NULL,
     submission_date timestamp  NOT NULL,
-    status smallint  NOT NULL,
+    status boolean  NOT NULL,
     CONSTRAINT submission_pk PRIMARY KEY (submission_id)
 );
 
@@ -218,7 +221,7 @@ CREATE TABLE submission (
 CREATE TABLE tag (
     tag_id int  NOT NULL,
     name varchar(50)  NOT NULL,
-    status smallint  NOT NULL,
+    status boolean  NOT NULL,
     CONSTRAINT tag_pk PRIMARY KEY (tag_id)
 );
 
@@ -227,8 +230,9 @@ CREATE TABLE testcase (
     testcase_id serial  NOT NULL,
     problem_id int  NOT NULL,
     tescase_number int  NOT NULL,
-    s3_testcase int  NOT NULL,
-    status smallint  NOT NULL,
+    s3_input int  NOT NULL,
+    s3_output int  NOT NULL,
+    status boolean  NOT NULL,
     CONSTRAINT testcase_pk PRIMARY KEY (testcase_id)
 );
 
@@ -240,7 +244,7 @@ CREATE TABLE testcase_submission (
     submission_id int  NOT NULL,
     memory int  NOT NULL,
     time decimal(5,3)  NOT NULL,
-    status smallint  NOT NULL,
+    status boolean  NOT NULL,
     CONSTRAINT testcase_submission_pk PRIMARY KEY (tescase_submission_id)
 );
 
@@ -249,7 +253,7 @@ CREATE TABLE verdict_type (
     verdict_type_id int  NOT NULL,
     description varchar(20)  NOT NULL,
     abbreviation varchar(4)  NOT NULL,
-    status smallint  NOT NULL,
+    status boolean  NOT NULL,
     CONSTRAINT verdict_type_pk PRIMARY KEY (verdict_type_id)
 );
 
